@@ -1,0 +1,65 @@
+#include <iostream>
+#include<fstream>
+#include <string.h>
+#include <string>
+#include <Windows.h> 
+using namespace std;
+
+int main() {
+    SetConsoleOutputCP(1251);
+    const int sizeS = 2;
+    cout << "Завдання 2: \n-------------------------------------\n";
+    class encodeDataLine {
+    public:
+        unsigned short nl : 2;
+        unsigned short ps : 5;
+        unsigned short nac : 8;
+        unsigned short bp : 1;
+    };
+
+    encodeDataLine S[32][4];
+
+    string line;
+
+    ifstream file("in.txt", ios::out | ios::binary | ios::app);
+    ofstream fileW("out.txt");
+
+    if (file.is_open()) {
+        short n = 0;
+        cout << "Зчитування та шифрування даних з файлу: " << endl;
+        fileW << "Encryption: ";
+        while (getline(file, line)) {
+            if (line.size() < 32) {
+                for (int i = line.size() - 1; i < 32; i++) {
+                    line += ' ';
+                }
+            }
+            for (int i = 0; i < 32; i++) {
+                short temp = int(line[i]);
+                short pair = i + 1 % 2 ? 1 : 0;
+                cout << char(temp ^ ~(i + 1 << n >> pair));
+                S[n][i].nl = n;
+                S[n][i].ps = i;
+                S[n][i].nac = temp ^ (i + 1 << n >> pair);
+                S[n][i].bp = pair ? 1 : 0;
+                fileW << char(S[n][i].nac);
+            }
+            fileW << endl;
+            n++;
+            cout << endl;
+        }
+    }
+    cout << endl << "Розшифрування даних: " << endl;
+
+    for (int n = 0; n < 4; n++) {
+        for (int i = 0; i < 32; i++) {
+            cout << char(S[n][i].nac ^ (S[n][i].ps + 1 << S[n][i].nl >> S[n][i].bp));
+        }
+        cout << endl;
+    }
+
+    fileW.close();
+    file.close();
+
+    return 0;
+}

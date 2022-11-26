@@ -1,0 +1,25 @@
+#include <iostream>
+#include <cstdlib>
+#include <math.h>
+#include <Windows.h> 
+using namespace std;
+int main() {
+	SetConsoleOutputCP(1251);
+	int a, b, c, d, x, y;
+	a = rand() % 41 - 20;
+	b = rand() % 41 - 20;
+	c = rand() % 41 - 20;
+	d = rand() % 41 - 20;
+	cout << "Число а: " << a << endl;
+	cout << "Число b: " << b << endl;
+	cout << "Число c: " << c << endl;
+	cout << "Число d: " << d << endl;
+
+	x = ((15 * a + 312 * b) / 64) - c * 120 + d * 121;
+	cout << "Результат за допомогою математичних операцій: " << x << endl;
+
+
+	y = ((((a << 4) - a) + ((b << 8) + (b << 4) + (b << 4) + (b << 4) + (b << 3))) >> 6) - ((c << 7) - c - c - c - c - c - c - c - c) + ((d << 7) - d - d - d - d - d - d - d);
+	cout << "Результат за допомогою операцій зсуву: " << y << endl;
+	return 0;
+}
